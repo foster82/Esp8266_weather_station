@@ -2,11 +2,13 @@
 #include <Adafruit_BMP085.h>
 #include "DHT.h"
 #include <ESP8266WiFi.h>
+
 #define DHTPIN D3     // what digital pin we're connected to
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 WiFiClient client;
 Adafruit_BMP085 bmp;
+ADC_MODE(ADC_VCC);
 #define ssid "PlusnetWirelessB43557"
 #define password "P050778J310382H"
 const char* server = "api.thingspeak.com";
@@ -31,6 +33,8 @@ void loop() {
   float t = dht.readTemperature();
   float y = bmp.readTemperature();
   float j = bmp.readPressure()/100;
+  float v = ESP.getVcc();
+    
   if (isnan(h) || isnan(t) ) {
     //Serial.println("Failed to read from DHT sensor!");
     return;
@@ -47,10 +51,11 @@ void loop() {
   Serial.print("Temperature = ");
   Serial.print(y);
   Serial.println(" *C");
-
   Serial.print("Pressure = ");
   Serial.print(j);
   Serial.println(" mb");
+  Serial.print(" v");
+  Serial.print(v);
 
   if (client.connect(server, 80)){
     String postStr = api;
@@ -62,6 +67,8 @@ void loop() {
       postStr += String(y);
       postStr += "&field4=";
       postStr += String(j);
+      postStr += "&field5=";  
+      postStr += String(v);
       client.print("POST /update HTTP/1.1\n");
      client.print("Host: api.thingspeak.com\n");
      client.print("Connection: close\n");
