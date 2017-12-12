@@ -2,7 +2,7 @@
 
 #include <Wire.h>
 #include <Adafruit_BMP085.h>
-#include "DHT.h"
+#include <DHT.h>
 #include <ESP8266WiFi.h>
 
 #define DHTPIN D3     // what digital pin we're connected to
@@ -35,7 +35,7 @@ void loop() {
   float t = dht.readTemperature();
   float y = bmp.readTemperature();
   float j = bmp.readPressure()/100;
-  float v = ESP.getVcc();
+  float v = ESP.getVcc()/1000.0;
     
   if (isnan(h) || isnan(t) ) {
     //Serial.println("Failed to read from DHT sensor!");
@@ -56,8 +56,9 @@ void loop() {
   Serial.print("Pressure = ");
   Serial.print(j);
   Serial.println(" mb");
+  Serial.print(v); 
   Serial.print(" v");
-  Serial.print(v);
+  
 
   if (client.connect(server, 80)){
     String postStr = api;
