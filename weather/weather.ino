@@ -88,7 +88,7 @@ void loop() {
   
   }
 
- // go to deepsleep for 10 minutes
+ // go to deepsleep for 15 minutes
   
 
   Serial.println();
