@@ -167,7 +167,7 @@ void loop() {
   
 
   Serial.println();
-  //ESP.deepSleep(sleepTimeS * 60 * 1000000,WAKE_RF_DEFAULT);
+  ESP.deepSleep(sleepTimeS * 60 * 1000000,WAKE_RF_DEFAULT);
  // system_deep_sleep_set_option(0);
  // system_deep_sleep(15 * 60 * 1000000);
   //delay(120000);
